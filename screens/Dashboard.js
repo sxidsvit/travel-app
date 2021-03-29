@@ -141,10 +141,34 @@ const Dashboard = ({ navigation }) => {
                         )
                     } else {
                         return (
-                            <View>
-                                <Text style={{ color: COLORS.white }}>
-                                    {item.name}</Text>
-                            </View>
+                            <Animated.View
+                                opacity={opacity}
+                                style={{
+                                    height: 130,
+                                    width: COUNTRIES_ITEM_SIZE,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <Animated.Image
+                                    source={item.image}
+                                    resizeMode='contain'
+                                    style={{
+                                        width: mapSize,
+                                        height: mapSize,
+                                        tintColor: COLORS.white
+                                    }}
+                                />
+                                <Animated.Text
+                                    style={{
+                                        marginTop: 3,
+                                        color: COLORS.white, ...FONTS.h1,
+                                        fontSize: fontSize
+                                    }}>
+                                    {item.name}
+                                </Animated.Text>
+                            </Animated.View>
+
                         )
                     }
                 }}
