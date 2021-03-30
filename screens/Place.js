@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { HeaderBar } from '../components'
+import { TextIconButton } from '../components'
 
 import { SIZES, FONTS, COLORS, icons } from '../constants'
 
@@ -78,7 +79,16 @@ const Place = ({ navigation, route }) => {
                     >{selectedPlace?.description}
                     </Text>
                     {/* Text Icon Button */}
-
+                    <TextIconButton
+                        label='Book of flight'
+                        icon={icons.aeroplane}
+                        customContainerStyle={{
+                            marginTop: SIZES.padding
+                        }}
+                        onPress={() => {
+                            console.log('Book a flight')
+                        }}
+                    />
                 </View>
 
 
