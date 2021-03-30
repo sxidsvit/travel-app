@@ -11,6 +11,7 @@ import {
     TouchableOpacityBase
 } from 'react-native';
 
+import { TextButton } from '../components'
 import { dummyData, icons, images, theme, COLORS, SIZES, FONTS } from '../constants'
 
 const COUNTRIES_ITEM_SIZE = SIZES.width / 3
@@ -22,15 +23,12 @@ const Dashboard = ({ navigation }) => {
 
     const countryScrollX = useRef(new Animated.Value(0)).current
     const placesScrollX = useRef(new Animated.Value(0)).current
-    console.log('placesScrollX: ', placesScrollX);
 
     const [countries, setCountries] = useState([{ id: -1 }, ...dummyData.countries, { id: -2 }])
     const [places, setPlaces] = useState([{ id: -1 }, ...dummyData.countries[0].places, { id: -2 }])
+    const [placesScrollPosition, setPlacesScrollPosition] = useState(0)
 
-
-
-
-    const rendereHeader = () => {
+    const renderHeader = () => {
         return (
             <View style={{
                 flexDirection: 'row',
@@ -109,6 +107,18 @@ const Dashboard = ({ navigation }) => {
                 onScroll={Animated.event([
                     { nativeEvent: { contentOffset: { x: countryScrollX } } }],
                     { useNativeDriver: false })}
+                onMomentumScrollEnd={(event) => {
+                    // Calculate position
+                    let position =
+                        (event.nativeEvent.contentOffset.x / COUNTRIES_ITEM_SIZE)
+                            .toFixed(0)
+                    // Set Places
+                    setPlaces([
+                        { id: -1 },
+                        ...dummyData.countries[position].places,
+                        { id: -2 }
+                    ])
+                }}
                 renderItem={({ item, index }) => {
                     const opacity = countryScrollX.interpolate({
                         inputRange: [
@@ -185,6 +195,13 @@ const Dashboard = ({ navigation }) => {
         )
     }
 
+    const exploreButtonHandler = () => {
+        //  Get places currentindex
+        const currentIndex = parseInt(placesScrollPosition, 10) + 1
+        //  Navigate to the next screen
+        navigation.navigate('Place', { selectedPlace: places[currentIndex] })
+    }
+
     const renderPlaces = () => {
         return (
             <Animated.FlatList
@@ -205,8 +222,17 @@ const Dashboard = ({ navigation }) => {
                 decelerationRate={0}
                 bounces={false}
                 onScroll={Animated.event([
-                    { nativeEvent: { contentOffset: { x: countryScrollX } } }],
+                    { nativeEvent: { contentOffset: { x: placesScrollX } } }],
                     { useNativeDriver: false })}
+
+                onMomentumScrollEnd={(event) => {
+                    // Calculate position
+                    let position =
+                        (event.nativeEvent.contentOffset.x / PLACES_ITEM_SIZE)
+                            .toFixed(0)
+                    // Set Place Scroll Position
+                    setPlacesScrollPosition(position)
+                }}
 
                 renderItem={({ item, index }) => {
                     const opacity = placesScrollX.interpolate({
@@ -227,7 +253,7 @@ const Dashboard = ({ navigation }) => {
                             activeHeight = SIZES.height / 1.65
                         }
                     } else {
-                        activeHeight = SIZES.height / 1.6
+                        activeHeight = SIZES.height / 1.8
                     }
 
                     const height = placesScrollX.interpolate({
@@ -236,9 +262,8 @@ const Dashboard = ({ navigation }) => {
                             (index - 1) * PLACES_ITEM_SIZE,
                             (index - 0) * PLACES_ITEM_SIZE
                         ],
-                        outputRange: [
-                            SIZES.height / 2.25, activeHeight, SIZES.height / 2.25
-                        ],
+                        outputRange: [SIZES.height / 2.25,
+                            activeHeight, SIZES.height / 2.25],
                         extrapolate: 'clamp'
                     })
 
@@ -292,6 +317,15 @@ const Dashboard = ({ navigation }) => {
                                     }}>
                                         {item.description}
                                     </Text>
+
+                                    <TextButton label='Explore'
+                                        customContainerStyle={{
+                                            position: 'absolute',
+                                            bottom: -20,
+                                            width: 150
+                                        }}
+                                        onPress={() => exploreButtonHandler()}
+                                    />
                                 </View>
                             </Animated.View>
                         )
@@ -303,7 +337,7 @@ const Dashboard = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
-            {rendereHeader()}
+            {renderHeader()}
             <ScrollView
                 contentContainerStyle={{
                     paddingBottom: Platform.OS === 'ios' ? 40 : 0,
