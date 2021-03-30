@@ -4,7 +4,8 @@ import {
     Text,
     ImageBackground,
     Image,
-    Animated
+    Animated,
+    _Text
 } from 'react-native';
 
 import { HeaderBar } from '../components'
@@ -38,6 +39,48 @@ const Place = ({ navigation, route }) => {
                         marginTop: SIZES.padding * 2
                     }}
                 />
+
+                <View style={{
+                    flex: 1,
+                    paddingHorizontal: SIZES.padding,
+                    justifyContent: 'flex-end',
+                    marginBottom: 100
+                }}>
+                    {/* Name & Rating */}
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{
+                            color: COLORS.white, ...FONTS.largeTitle
+                        }}>
+                            {selectedPlace?.name}
+                        </Text>
+                        <View
+                            style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                                marginRight: 5, color: COLORS.white, ...FONTS.h3
+                            }}>{selectedPlace?.rate}</Text>
+                            <Image
+                                source={icons.star}
+                                style={{
+                                    width: 20,
+                                    height: 20
+                                }}
+                            />
+                        </View>
+
+                    </View>
+
+                    {/* Description */}
+                    <Text style={{ color: COLORS.white, ...FONTS.body3, marginTop: SIZES.base }}
+                    >{selectedPlace?.description}
+                    </Text>
+                    {/* Text Icon Button */}
+
+                </View>
+
 
             </ImageBackground>
 
