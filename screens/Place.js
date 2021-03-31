@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     View,
     Text,
@@ -7,7 +7,7 @@ import {
     Animated,
     _Text
 } from 'react-native';
-
+import SlidingUpPanel from 'rn-sliding-up-panel'
 import { HeaderBar } from '../components'
 import { TextIconButton } from '../components'
 
@@ -16,6 +16,9 @@ import { SIZES, FONTS, COLORS, icons } from '../constants'
 const Place = ({ navigation, route }) => {
 
     const [selectedPlace, setSelectedPlace] = useState(null)
+
+    let _panel = useRef(null)
+    console.log('_panel: ', _panel);
 
     useEffect(() => {
         let { selectedPlace } = route.params
@@ -97,10 +100,64 @@ const Place = ({ navigation, route }) => {
         )
     }
 
+    const renderMap = () => {
+        return (
+            <SlidingUpPanel
+                ref={c => (_panel = c)}
+                draggableRange={{ top: SIZES.height + 120, bottom: 120 }}
+                showBackdrop={false}
+                snappingPoints={[SIZES.height + 120]}
+                height={SIZES.height + 120}
+                friction={0.7}
+            >
+                <View style={{
+                    flex: 1,
+                    backgroundColor: 'transparent'
+                }}>
+                    {/* Panel Header */}
+                    <View style={{
+                        height: 120,
+                        backgroundColor: 'transparent',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Image
+                            source={icons.up_arrow}
+                            style={{
+                                height: 20,
+                                width: 20,
+                                tintColor: COLORS.white
+                            }}
+                        />
+                        <Text style={{ color: COLORS.white, ...FONTS.h3 }}>
+                            SWIPE FOR DETAILS
+                        </Text>
+                    </View>
+
+                    {/* Panel Detail */}
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: COLORS.white,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+
+                    </View>
+                </View>
+
+            </SlidingUpPanel>
+
+
+        )
+    }
+
+
+
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             {renderPlace()}
+            {renderMap()}
         </View>
     )
 }
