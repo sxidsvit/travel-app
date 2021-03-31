@@ -4,8 +4,7 @@ import {
     Text,
     ImageBackground,
     Image,
-    Animated,
-    _Text
+    Animated
 } from 'react-native';
 import SlidingUpPanel from 'rn-sliding-up-panel'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
@@ -17,6 +16,8 @@ import { MapStyle } from '../styles'
 const Place = ({ navigation, route }) => {
 
     const [selectedPlace, setSelectedPlace] = useState(null)
+    const [selectedHotel, setSelectedHotel] = useState(null)
+
     let _panel = useRef(null)
 
     useEffect(() => {
@@ -146,9 +147,34 @@ const Place = ({ navigation, route }) => {
                                 width: '100%',
                                 height: '100%',
                             }}
+                            customMapStyle={MapStyle}
                             provider={PROVIDER_GOOGLE}
                             initialRegion={selectedPlace?.mapInitialRegion}
                         >
+                            {
+                                selectedPlace?.hotels.map((hotel, index) => (
+                                    <Marker
+                                        key={index}
+                                        coordinate={hotel.latlng}
+                                        identifier={hotel.id}
+                                        onPress={() => {
+                                            setSelectedHotel(hotel)
+                                        }}
+                                    >
+                                        <Image
+                                            source={
+                                                selectedHotel?.id === hotel.id
+                                                    ? icons.bed_on : icons.bed_off}
+                                            resizeMode='contain'
+                                            style={{
+                                                width: 50,
+                                                height: 50
+                                            }}
+                                        />
+
+                                    </Marker>
+                                ))
+                            }
                         </MapView>
                     </View>
                 </View>
