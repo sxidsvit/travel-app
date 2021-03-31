@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import SlidingUpPanel from 'rn-sliding-up-panel'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
-import { HeaderBar, TextIconButton } from '../components'
+import { HeaderBar, TextIconButton, Rating, TextButton } from '../components'
 import { SIZES, FONTS, COLORS, icons } from '../constants'
 
 import { MapStyle } from '../styles'
@@ -176,12 +176,104 @@ const Place = ({ navigation, route }) => {
                                 ))
                             }
                         </MapView>
+
+                        {/* Header  */}
+                        <HeaderBar
+                            title={selectedPlace?.name}
+                            leftOnPressed={() => _panel.hide()}
+                            right={true}
+                            containerStyle={{
+                                position: 'absolute',
+                                top: SIZES.padding * 2
+                            }}
+
+                        />
+                        {/* Hotel Details  */}
+                        {selectedHotel &&
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 30,
+                                    left: 0,
+                                    right: 0,
+                                    padding: SIZES.radius
+                                }}
+                            >
+                                <Text style={{
+                                    color: COLORS.white, ...FONTS.h2
+                                }}>Hotel in {selectedHotel?.name}
+                                </Text>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        marginTop: SIZES.radius,
+                                        padding: SIZES.radius,
+                                        borderRadius: 15,
+                                        backgroundColor: COLORS.transparentBlack1
+                                    }}>
+                                    <Image
+                                        source={selectedHotel?.image}
+                                        resizeMode='cover'
+                                        style={{
+                                            width: 90,
+                                            height: 120,
+                                            borderRadius: 15
+                                        }}
+                                    />
+                                    <View style={{
+                                        flex: 1,
+                                        marginLeft: SIZES.radius,
+                                        justifyContent: 'center'
+                                    }}>
+                                        <Text style={{
+                                            color: COLORS.white, ...FONTS.h3
+                                        }}>{selectedHotel?.name}
+                                        </Text>
+                                        <Rating
+                                            containerStyle={{
+                                                marginTop: SIZES.base
+                                            }}
+                                            rate={selectedHotel?.rate}
+                                        />
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            marginTop: SIZES.base
+                                        }}>
+                                            <TextButton
+                                                label='details'
+                                                customContainerStyle={{
+                                                    marginTop: SIZES.base,
+                                                    height: 45,
+                                                    width: 100
+                                                }}
+                                                customLabelStyle={{
+                                                    ...FONTS.h3
+                                                }}
+                                                onPress={() => console.log('Details')}
+                                            />
+                                            <View
+                                                style={{
+                                                    flex: 1,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'flex-end',
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        color: COLORS.lightGray,
+                                                        ...FONTS.body5,
+                                                        fontSize: Platform.OS === 'ios' ? SIZES.body4 : SIZES.body5
+                                                    }} >
+                                                    from ${selectedHotel?.price} / night </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        }
                     </View>
                 </View>
-
             </SlidingUpPanel>
-
-
         )
     }
 
