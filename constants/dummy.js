@@ -269,7 +269,7 @@ export const countries = [
                         name: "The Kayon Jungle Resort",
                         image: require("../assets/images/indonesia/bali/the_kayon_jungle_resort.jpg"),
                         rate: 5,
-                        price: 199,
+                        price: 299,
                         latlng: {
                             latitude: -8.422426,
                             longitude: 115.275185,
@@ -280,7 +280,7 @@ export const countries = [
                         name: "Green View Private Villas",
                         image: require("../assets/images/indonesia/bali/green_view_private_villas.webp"),
                         rate: 5,
-                        price: 199,
+                        price: 299,
                         latlng: {
                             latitude: -8.422203,
                             longitude: 115.275142,
@@ -306,7 +306,7 @@ export const countries = [
                         name: "Oakwood Premier Cozmo",
                         image: require("../assets/images/indonesia/jakarta/oakwood_premier_cozmo.jpg"),
                         rate: 5,
-                        price: 199,
+                        price: 299,
                         latlng: {
                             latitude: -6.227846,
                             longitude: 106.825391,
@@ -317,7 +317,7 @@ export const countries = [
                         name: "JW Marriott Hotel",
                         image: require("../assets/images/indonesia/jakarta/jw_marriott_hotel.jpg"),
                         rate: 5,
-                        price: 199,
+                        price: 299,
                         latlng: {
                             latitude: -6.227036,
                             longitude: 106.827333,
@@ -343,7 +343,7 @@ export const countries = [
                         name: "Purist Beach",
                         image: require("../assets/images/indonesia/nusa_penida/purist_beach.jpg"),
                         rate: 5,
-                        price: 199,
+                        price: 399,
                         latlng: {
                             latitude: -8.703571,
                             longitude: 115.439826,

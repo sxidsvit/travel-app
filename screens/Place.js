@@ -12,18 +12,30 @@ import { HeaderBar, TextIconButton, Rating, TextButton } from '../components'
 import { SIZES, FONTS, COLORS, icons } from '../constants'
 
 import { MapStyle } from '../styles'
+import { set } from 'react-native-reanimated';
 
 const Place = ({ navigation, route }) => {
 
     const [selectedPlace, setSelectedPlace] = useState(null)
     const [selectedHotel, setSelectedHotel] = useState(null)
+    const [alowDragging, setAlowDragging] = useState(true)
 
+    const _draggedValue = useRef(new Animated.Value(0)).current
     let _panel = useRef(null)
 
     useEffect(() => {
         let { selectedPlace } = route.params
         setSelectedPlace(selectedPlace)
+        //  Listener that disable panel draggin whenever the maview is shown
+        _draggedValue.addListener((valueObj) => {
+            if (valueObj.value > SIZES.height) {
+                setAlowDragging(false)
+            }
+        })
+        return () => { _draggedValue.removeAllListeners() }
     }, [])
+
+
 
 
     const renderPlace = () => {
@@ -104,11 +116,16 @@ const Place = ({ navigation, route }) => {
         return (
             <SlidingUpPanel
                 ref={c => (_panel = c)}
+                alowDragging={alowDragging}
                 draggableRange={{ top: SIZES.height + 120, bottom: 120 }}
+                animatedValue={_draggedValue}
                 showBackdrop={false}
                 snappingPoints={[SIZES.height + 120]}
                 height={SIZES.height + 120}
                 friction={0.7}
+                onBottomReached={() => {
+                    setAlowDragging(true)
+                }}
             >
                 <View style={{
                     flex: 1,
