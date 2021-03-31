@@ -38,3 +38,5 @@ yarn add react-native-webview
 ...
 npm install react-native-maps --save-exact
 ```
+
+[Детали настройки](https://www.byprogrammers.com/2020/11/how-to-integrate-google-maps-in-react-native-app/)
